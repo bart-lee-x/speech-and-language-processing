@@ -1,0 +1,104 @@
+ch 26
+
+
+The literature of the fantastic abounds in inanimate objects magically endowed with sentience and the gift of speech. From Ovid’s statue of Pygmalion to Mary Shelley’s Frankenstein, there is something deeply moving about creating something and then having a chat with it. Legend has it that after finishing his sculpture Moses, Michelangelo thought it so lifelike that he tapped it on the knee and commanded it to speak. Perhaps this shouldn’t be surprising. Language is the mark
+conversation of humanity and sentience, and conversation or dialogue dialogue is the most fundamental and specially privileged arena of language. It is the first kind of language we learn as
+children, and for most of us, it is the kind of language we most commonly indulge in, whether we are ordering curry for lunch or buying spinach, participating in business meetings or talking with our families, booking airline flights or complaining about the weather.
+
+무생물에 대한 환상적인 문헌은 마술과 선의의 선물로 마술을 부여했습니다. 오비드의 피그말리온 동상에서 메리 셸리의 프랑켄슈타인에 이르기까지 무언가를 만들고 대화를 나누는 데 깊은 감동이 있습니다. 전설에 따르면 미켈란젤로는 조각 모세를 완성한 후에 무릎을 꿇고 말을하도록 명령하기에 너무나 생생하다고 생각했습니다. 아마도 이것은 놀라운 일이 아닙니다. 언어는 마크입니다
+인성과 대화의 대화, 대화 또는 대화의 대화는 가장 기본적이고 특권이있는 언어 영역입니다. 우리가 배우는 첫 번째 언어입니다
+점심 식사 나 시금치 구매, 비즈니스 미팅 참여 또는 가족과의 대화, 항공사 항공편 예약 또는 날씨에 대한 불만 등의 이유로 카레를 주문할 때 가장 많이 사용하는 언어입니다.
+
+This chapter introduces the fundamental algorithms of conversational agents, conversational agent dialogue system or dialogue systems. These programs communicate with users in natural language(text, speech, or both), and fall into two classes. Task-oriented dialogue agents use conversation with users to help complete tasks. Dialogue agents in digital assistants(Siri, Alexa, Google Now/Home, Cortana, etc.), give directions, control appliances, find restaurants, or make calls. Conversational agents can answer questions on corporate websites, interface with robots, and even be used for social good: DoNotPay is a “robot lawyer” that helps people challenge incorrect parking fines, apply for emergency housing, or claim asylum if they are refugees. By contrast, chatbots are systems designed for extended conversations, set up to mimic the unstructured conversations or ‘chats’ characteristic of human-human interaction, mainly for entertainment, but also for practical purposes like making task-oriented agents more natural. In Section 26.2 we’ll discuss the three major chatbot architectures : rulebased systems, information retrieval systems, and encoder-decoder models. In Section 26.3 we turn to task-oriented agents, introducing the frame-based architecture (the GUS architecture) that underlies most modern task-based systems.
+
+이 장에서는 대화 에이전트, 대화 에이전트 대화 시스템 또는 대화 시스템의 기본 알고리즘을 소개합니다. 이 프로그램은 자연 언어 (텍스트, 음성 또는 둘 다)로 사용자와 통신하며 두 가지 클래스로 나뉩니다. 작업 지향 대화 에이전트는 사용자와의 대화를 사용하여 작업을 완료합니다. 디지털 비서 (Siri, Alexa, Google Now / Home, Cortana 등)의 대화 상담원은 길 찾기, 기기 제어, 식당 찾기 또는 전화 걸기 등을 수행합니다. 대화 상담원은 회사 웹 사이트에 대한 질문에 답변하고 로봇과의 인터페이스를 제공하며 사회적 이익을 위해 사용될 수도 있습니다. DoNotPay는 사람들이 잘못된 주차 벌금에 이의를 제기하거나 긴급 주택을 신청하거나 난민 인 경우 망명을 신청하는 데 도움이되는 "로봇 변호사"입니다. 반대로 챗봇은 확장 된 대화를 위해 고안된 시스템으로, 주로 엔터테인먼트를 위해뿐만 아니라 업무 지향적 인 상담원을보다 자연스럽게 만드는 것과 같은 실제적인 목적을 위해 구조화되지 않은 대화 또는 인간과 인간의 상호 작용의 '채팅'을 모방하도록 설정되었습니다. 26.2 절에서는 규칙 기반 시스템, 정보 검색 시스템 및 인코더 디코더 모델의 세 가지 주요 챗봇 아키텍처에 대해 설명합니다. 26.3 절에서 우리는 작업 지향 에이전트로 돌아가서 가장 현대적인 작업 기반 시스템의 기본이되는 프레임 기반 아키텍처 (GUS 아키텍처)를 소개합니다.
+
+26.1 Properties of Human Conversation
+
+Conversation between humans is an intricate and complex joint activity. Before we attempt to design a conversational agent to converse with humans, it is crucial to understand something about how humans converse with each other. Consider some of the phenomena that occur in the conversation between a human travel agent and a human client excerpted in Fig. 26.1.
+
+인간 간의 대화는 복잡하고 복잡한 공동 활동입니다. 인간과 대화 할 대화 에이전트를 디자인하기 전에 인간이 서로 대화하는 방법에 대해 이해하는 것이 중요합니다. 그림 26.1에서 발췌 한 인간 여행사와 인간 고객 간의 대화에서 발생하는 일부 현상을 고려하십시오.
+
+
+C1: . . . I need to travel in May.
+A1: And, what day in May did you want to travel?
+C2: OK uh I need to be there for a meeting that’s from the 12th to the 15th.
+A2: And you’re flying into what city?
+C3: Seattle.
+A3: And what time would you like to leave Pittsburgh?
+C4: Uh hmm I don’t think there’s many options for non-stop.
+A4: Right. There’s three non-stops today.
+C5: What are they?
+A5: The first one departs PGH at 10:00am arrives Seattle at 12:05 their time. The
+second flight departs PGH at 5:55pm, arrives Seattle at 8pm. And the last
+flight departs PGH at 8:15pm arrives Seattle at 10:28pm.
+C6: OK I’ll take the 5ish flight on the night before on the 11th.
+A6: On the 11th? OK. Departing at 5:55pm arrives Seattle at 8pm, U.S. Air flight
+115.
+C7: OK.
+A7: And you said returning on May 15th?
+C8: Uh, yeah, at the end of the day.
+A8: OK. There’s #two non-stops . . . #
+C9: #Act. . . actually #, what day of the week is the 15th?
+A9: It’s a Friday.
+C10: Uh hmm. I would consider staying there an extra day til Sunday.
+A10: OK. . . OK. On Sunday I have . . .
+
+
+Turns
+
+A dialogue is a sequence of turns (A1, B1, A2, and so on), each a single contribution to the dialogue (as if in a game: I take a turn, then you take a turn, then me, and so on). A turn can consist of a sentence (like C1), although it might be as short as a single word (C7) or as long as multiple sentences (A5).
+
+대화는 일련의 회전 (A1, B1, A2 등)이며, 각각 대화에 단일 기여를합니다 (게임에서와 같이 : 차례를 한 다음 차례를 한 다음 나 등) ). 턴은 한 단어 (C7)만큼 짧거나 여러 문장 (A5)만큼 길지만 문장 (예 : C1)으로 구성 될 수 있습니다.
+
+Turn structure has important implications for spoken dialogue. A system has to know when to stop talking; the client interrupts (in A8 and C9), so the system must know to stop talking (and that the user might be making a correction). A system also has to know when to start talking. For example, most of the time in conversation, speakers start their turns almost immediately after the other speaker finishes, without a long pause, because people are able to (most of the time) detect when the other person is about to finish talking. Spoken dialogue systems must also detect whether a user is done speaking, so they can process the utterance and respond. This task— endpointing called endpointing or endpoint detection— can be quite challenging because of noise and because people often pause in the middle of turns.
+
+턴 구조는 대화에 중요한 영향을 미칩니다. 시스템은 언제 말을 멈추어야하는지 알아야합니다. 클라이언트가 (A8 및 C9에서) 인터럽트하므로 시스템은 대화를 중지해야하며 사용자가 정정 할 수 있음을 알아야합니다. 시스템은 언제 이야기를 시작할 지 알아야합니다. 예를 들어, 대부분의 대화에서, 스피커는 상대방이 대화를 마치려고 할 때 사람들이 (대부분) 감지 할 수 있기 때문에 다른 스피커가 끝난 후 거의 즉시 자신의 차례를 시작합니다. 음성 대화 시스템은 사용자의 발화 여부를 감지하여 발화를 처리하고 응답 할 수 있어야합니다. 엔드 포인트 또는 엔드 포인트 감지라고하는이 작업은 소음 때문에 사람들이 종종 턴 중간에 일시 정지하기 때문에 매우 어려울 수 있습니다.
+
+A key insight into conversation—due originally to the philosopher Wittgenstein (1953) but worked out more fully by Austin (1962)—is that each utterance in a dialogue is a kind of action being performed by the speaker. These actions are comspeech acts monly called speech acts or dialog acts: here’s one taxonomy consisting of 4 major classes (Bach and Harnish, 1979):
+
+원래 철학자 Wittgenstein (1953)에 의해 대화되었지만 오스틴 (1962)에 의해 더욱 완벽하게 해결 된 대화에 대한 주요 통찰은 대화의 각 발화가 화자에 의해 수행되는 일종의 행동이라는 것입니다. 이러한 행동은 언어 행위 또는 대화 행위라고하는 징계 행위입니다. 다음은 4 가지 주요 클래스로 구성된 분류 체계입니다 (Bach and Harnish, 1979).
+
+```
+Constatives: committing the speaker to something’s being the case (answering, claiming,
+confirming, denying, disagreeing, stating)
+Directives: attempts by the speaker to get the addressee to do something (advising, asking, forbidding, inviting, ordering, requesting)
+Commissives: committing the speaker to some future course of action (promising, planning,
+vowing, betting, opposing)
+Acknowledgments: express the speaker’s attitude regarding the hearer with respect to some social action (apologizing, greeting, thanking, accepting an acknowledgment)
+```
+
+```
+답변 : 화자에게 사건에 대해 답변하기 (답변, 주장, 확인, 거부, 동의하지 않음, 진술)
+지시어 : 화자에 의해 수취인이 무언가를하도록 시도 (조언, 요청, 금지, 초대, 주문, 요청)
+커미티 브 : 발표자에게 미래의 행동 과정 (약속, 계획, 투표, 베팅, 반대)
+감사의 말 : 사회적 행동 (사죄, 인사, 감사, 인정)과 관련하여 청중에 대한 화자의 태도를 표현합니다.
+```
+
+A user asking a person or a dialogue system to do something (‘Turn up the music’) is issuing a DIRECTIVE. Asking a question that requires an answer is also a way of issuing a DIRECTIVE: in a sense when the system says (C2) “what day in May did you want to travel?” it’s as if the system is (very politely) commanding the system to answer. By contrast, a user stating a constraint (like C1 ‘I need to travel in May’) is issuing a CONSTATIVE. A user thanking the system is issuing an ACKNOWLEDGMENT. The speech act expresses an important component of the intention of the speaker (or writer) in saying what they said.
+
+개인이나 대화 시스템에 무언가를 요청하는 ( '음악 켜기') 사용자가 DIRECTIVE를 발행하고 있습니다. 답변이 필요한 질문을하는 것도 DIRECTIVE를 발행하는 방법입니다. 시스템이 (C2)“5 월 어느 날 여행하고 싶습니까?” 마치 시스템이 (매우 정중하게) 시스템에 응답하도록 명령하는 것처럼 보입니다. 대조적으로 C1‘5 월에 여행해야 해요’와 같은 제약 조건을 명시한 사용자는 CONSTATIVE를 발행하고 있습니다. 시스템에 감사하는 사용자가 ACKNOWLEDGMENT를 발행하고 있습니다. 발화 행위는 발언자 (또는 작가)가 자신이 말한 것을 말하려는 의도의 중요한 구성 요소를 나타냅니다.
+
+
+Grounding
+
+A dialogue is not just a series of independent speech acts, but rather a collective act performed by the speaker and the hearer. Like all collective acts, it’s important for the participants to establish what they both agree on, called the common ground common ground grounding (Stalnaker, 1978). Speakers do this by grounding each other’s utterances. Grounding means acknowledging that the hearer has understood the speaker; like an ACK used to confirm receipt in data communications (Clark, 1996). (People need grounding for non-linguistic actions as well; the reason an elevator button lights up when it’s pressed is to acknowledge that the elevator has indeed been called (Norman, 1988).)
+
+대화는 일련의 독립적 인 연설 행위가 아니라 스피커와 청취자가 수행하는 집단적 행위입니다. 모든 집단 행위와 마찬가지로 참가자는 공통 접지 공통 접지라고하는 두 가지 모두에 동의하는 것을 설정하는 것이 중요합니다 (Stalnaker, 1978). 화자는 서로의 발화를 접지하여이를 수행합니다. 접지는 청취자가 스피커를 이해했음을 인정하는 것입니다. 데이터 통신 수신을 확인하는 데 사용되는 ACK처럼 (Clark, 1996). (사람들은 비언어적 행동을 위해서도 접지가 필요하다; 엘리베이터 버튼을 눌렀을 때 엘리베이터 버튼이 점등되는 이유는 엘리베이터가 실제로 호출되었다는 것을 인정하기 위해서이다 (Norman, 1988).)
+
+Humans constantly ground each other’s utterances. We can ground by explicitly saying “OK”, as the agent does in A8 or A10. Or we can ground by repeating what the other person says; in utterance A1 the agent repeats “in May”, demonstrating her understanding to the client. Or notice that when the client answers a question, the agent begins the next question with “And”. The “And” implies that the new question is ‘in addition’ to the old question, again indicating to the client that the agent has successfully understood the answer to the last question.
+
+인간은 끊임없이 서로의 발화를 연마합니다. 상담원이 A8 또는 A10에서하는 것처럼“OK”라고 명시 적으로 말하면됩니다. 아니면 상대방이 말한 것을 반복함으로써 근거를 세울 수 있습니다. 발언 A1에서 상담원은 "5 월에"반복하여 고객에 대한 이해를 보여줍니다. 또는 고객이 질문에 대답하면 상담원은“And”로 다음 질문을 시작합니다. "그리고"는 새로운 질문이 이전 질문에 '추가 된 것'임을 암시하며 상담원이 마지막 질문에 대한 답변을 성공적으로 이해했음을 다시 고객에게 나타냅니다.
+
+
+Subdialogues and Dialogue Structure
+
+Conversations have structure. Consider, for example, the local structure betweenspeech acts discussed in the field of conversational analysis (Sacks et al., 1974).conversationalanalysisQUESTIONS set up an expectation for an ANSWER. PROPOSALS are followed byACCEPTANCE (or REJECTION). COMPLIMENTS (“Nice jacket!”) often give rise toadjacency pair DOWNPLAYERS (“Oh, this old thing?”). These pairs, called adjacency pairs arecomposed of a first pair part and a second pair part (Schegloff, 1968), and theseexpectations can help systems decide what actions to take.
+
+대화 구조가 있습니다. 예를 들어, 대화 분석 분야에서 논의 된 음성 행위 사이의 지역적 구조를 고려해보십시오 (Sacks et al., 1974). 제안서에는 수락 (또는 거부)이 따른다. 칭찬 (“좋은 재킷!”)은 종종 인접 쌍 다운 플레이어 (“아,이 오래된 것?”)를 일으 킵니다. 인접 쌍이라고하는 이들 쌍은 제 1 쌍 부분과 제 2 쌍 부분으로 구성되며 (Schegloff, 1968), 이러한 기대는 시스템이 수행 할 조치를 결정하는 데 도움이 될 수 있습니다.
+
+However, dialogue acts aren’t always followed immediately by their second pairside sequence part. The two parts can be separated by a side sequence (Jefferson 1972) or subsubdialogue dialogue. For example utterances C9 to A10 constitute a correction subdialogue(Litman 1985, Litman and Allen 1987, Chu-Carroll and Carberry 1998):
+
+The question in C9 interrupts the prior discourse, in which the agent was lookingfor a May 15 return flight. The agent must answer the question and also realize that‘’I would consider staying...til Sunday” means that the client would probably like tochange their plan, and now go back to finding return flights, but for the 17th.Another side sequence is the clarification question, which can form a subdialogue between a REQUEST and a RESPONSE. This is especially common in dialoguesystems where speech recognition errors causes the system to have to ask for clarifications or repetitions like the following:
+
+In addition to side-sequences, questions often have presequences, like the following example where a user starts with a question about the system’s capabilities(“Can you make train reservations”) before making a request.
